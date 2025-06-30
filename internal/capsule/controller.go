@@ -7,23 +7,21 @@ import (
 	"time"
 )
 
-type Controller interface {
-	CreateController(w http.ResponseWriter, r *http.Request)
-	OpenController(w http.ResponseWriter, r *http.Request)
-	AddMessageController(w http.ResponseWriter, r *http.Request)
-}
-
 type controller struct {
-	capsuleService Service
+	creator      *Creator
+	opener       *Opener
+	messageAdder *MessageAdder
 }
 
-func NewController(capsuleService Service) *controller {
+func NewController(creator *Creator, opener *Opener, messageAdder *MessageAdder) *controller {
 	return &controller{
-		capsuleService: capsuleService,
+		creator:      creator,
+		opener:       opener,
+		messageAdder: messageAdder,
 	}
 }
 
-func (c *controller) CreateController(w http.ResponseWriter, r *http.Request) {
+func (c *controller) CreateCapsule(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	var mapData map[string]any
@@ -39,10 +37,9 @@ func (c *controller) CreateController(w http.ResponseWriter, r *http.Request) {
 
 	dateToOpen := time.Unix(int64(dateToOpenInt), 0)
 
-	id, err := c.capsuleService.CreateCapsule(name, description, dateToOpen)
+	id, err := c.creator.Create(name, description, dateToOpen)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprint(w, err.Error())
 		return
 	}
 
@@ -50,20 +47,21 @@ func (c *controller) CreateController(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
-func (c *controller) OpenController(w http.ResponseWriter, r *http.Request) {
+func (c *controller) OpenCapsule(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	id := r.PathValue("id")
 
-	if err := c.capsuleService.OpenCapsule(id); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+	err := c.opener.Open(id)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
 }
 
-func (c *controller) AddMessageController(w http.ResponseWriter, r *http.Request) {
+func (c *controller) AddMessageToCapsule(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	id := r.PathValue("id")
@@ -77,21 +75,18 @@ func (c *controller) AddMessageController(w http.ResponseWriter, r *http.Request
 
 	message := mapData["message"].(string)
 
-	capsule, err := c.capsuleService.AddMessageToCapsule(id, message)
+	messages, err := c.messageAdder.Add(id, message)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprint(w, err.Error())
 		return
 	}
 
-	w.Header().Set("Location", fmt.Sprintf("/capsules/%s", capsule.Id))
 	w.WriteHeader(http.StatusCreated)
 
 	if err := json.NewEncoder(w).Encode(map[string]any{
-		"messages": capsule.Messages,
+		"messages": messages,
 	}); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprint(w, err.Error())
 		return
 	}
 }

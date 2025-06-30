@@ -7,7 +7,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type Model struct {
+type Entity struct {
 	Id          string
 	Name        string
 	Description string
@@ -18,8 +18,8 @@ type Model struct {
 	Messages    []string
 }
 
-func NewModel(name, description string, dateToOpen time.Time) *Model {
-	return &Model{
+func NewEntity(name, description string, dateToOpen time.Time) *Entity {
+	return &Entity{
 		Id:          uuid.NewString(),
 		Name:        name,
 		Description: description,
@@ -31,7 +31,7 @@ func NewModel(name, description string, dateToOpen time.Time) *Model {
 	}
 }
 
-func (m *Model) AddMessage(message string) error {
+func (m *Entity) AddMessage(message string) error {
 	if m.IsOpen {
 		return errors.New("capsule is already open")
 	}
@@ -40,7 +40,7 @@ func (m *Model) AddMessage(message string) error {
 	return nil
 }
 
-func (m *Model) Open() error {
+func (m *Entity) Open() error {
 	if m.IsOpen {
 		return errors.New("capsule is already open")
 	}

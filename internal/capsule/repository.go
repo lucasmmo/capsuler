@@ -5,6 +5,11 @@ import (
 	"time"
 )
 
+type Repository interface {
+	Save(*Entity) error
+	GetById(id string) (*Entity, error)
+}
+
 type repository struct {
 	sql *sql.DB
 }
@@ -15,7 +20,7 @@ func NewRepository(pool *sql.DB) *repository {
 	}
 }
 
-func (r *repository) Save(capsule *Model) error {
+func (r *repository) Save(capsule *Entity) error {
 	if _, err := r.sql.Exec(`
 		INSERT INTO capsules (id, name, description, date_to_open, is_open, created_at, updated_at)
 		VALUES (@id, @name, @description, @date_to_open, @is_open, @created_at, @updated_at)
@@ -54,7 +59,7 @@ func (r *repository) Save(capsule *Model) error {
 	return nil
 }
 
-func (r *repository) GetById(id string) (*Model, error) {
+func (r *repository) GetById(id string) (*Entity, error) {
 	var name string
 	var description string
 	var dateToOpen time.Time
@@ -93,7 +98,7 @@ func (r *repository) GetById(id string) (*Model, error) {
 		return nil, err
 	}
 
-	return &Model{
+	return &Entity{
 		Id:          id,
 		Name:        name,
 		Description: description,

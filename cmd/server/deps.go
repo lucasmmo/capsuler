@@ -8,25 +8,23 @@ import (
 )
 
 type dependencies struct {
-	pool                 *sql.DB
-	sqlCapsuleRepository capsule.Repository
-	capsuleService       capsule.Service
-	capsuleController    capsule.Controller
-	capsuleHandler       http.Handler
+	pool          *sql.DB
+	capsuleRoutes http.Handler
 }
 
 func InitDependencies() *dependencies {
 	pool := sqlite.NewConnection()
 	sqlCapsuleRepository := capsule.NewRepository(pool)
-	capsuleService := capsule.NewService(sqlCapsuleRepository)
-	capsuleController := capsule.NewController(capsuleService)
-	capsuleRoutes := capsule.NewHandler(capsuleController)
+
+	capsuleCreator := capsule.NewCreator(sqlCapsuleRepository)
+	capsuleOpener := capsule.NewOpener(sqlCapsuleRepository)
+	capsuleMessageAdder := capsule.NewMessageAdder(sqlCapsuleRepository)
+	capsuleController := capsule.NewController(capsuleCreator, capsuleOpener, capsuleMessageAdder)
+
+	capsuleRoutes := capsule.NewRouter(capsuleController)
 
 	return &dependencies{
-		pool:                 pool,
-		sqlCapsuleRepository: sqlCapsuleRepository,
-		capsuleService:       capsuleService,
-		capsuleController:    capsuleController,
-		capsuleHandler:       capsuleRoutes,
+		pool:          pool,
+		capsuleRoutes: capsuleRoutes,
 	}
 }
