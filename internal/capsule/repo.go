@@ -1,23 +1,22 @@
-package repositories
+package capsule
 
 import (
-	"capsuler/pkg/capsule"
 	"database/sql"
 	"time"
 )
 
-type SqlCapsuleRepository struct {
-	pool *sql.DB
+type repository struct {
+	sql *sql.DB
 }
 
-func NewSqlCapsuleRepository(pool *sql.DB) *SqlCapsuleRepository {
-	return &SqlCapsuleRepository{
-		pool: pool,
+func NewRepository(pool *sql.DB) *repository {
+	return &repository{
+		sql: pool,
 	}
 }
 
-func (r *SqlCapsuleRepository) Save(capsule *capsule.Capsule) error {
-	if _, err := r.pool.Exec(`
+func (r *repository) Save(capsule *Model) error {
+	if _, err := r.sql.Exec(`
 		INSERT INTO capsules (id, name, description, date_to_open, is_open, created_at, updated_at)
 		VALUES (@id, @name, @description, @date_to_open, @is_open, @created_at, @updated_at)
 		ON CONFLICT(id) DO UPDATE SET
@@ -27,25 +26,25 @@ func (r *SqlCapsuleRepository) Save(capsule *capsule.Capsule) error {
 		is_open = excluded.is_open,
 		updated_at = excluded.updated_at
 	`,
-		sql.Named("id", capsule.GetId()),
-		sql.Named("name", capsule.GetName()),
-		sql.Named("description", capsule.GetDescription()),
-		sql.Named("date_to_open", capsule.GetDateToOpen()),
-		sql.Named("is_open", capsule.WasOpened()),
-		sql.Named("created_at", capsule.GetCreatedAt()),
-		sql.Named("updated_at", capsule.GetUpdatedAt()),
+		sql.Named("id", capsule.Id),
+		sql.Named("name", capsule.Name),
+		sql.Named("description", capsule.Description),
+		sql.Named("date_to_open", capsule.DateToOpen),
+		sql.Named("is_open", capsule.IsOpen),
+		sql.Named("created_at", capsule.CreatedAt),
+		sql.Named("updated_at", capsule.UpdatedAt),
 	); err != nil {
 		return err
 	}
 
-	if len(capsule.GetMessages()) > 0 {
-		message := capsule.GetMessages()[len(capsule.GetMessages())-1]
+	if len(capsule.Messages) > 0 {
+		message := capsule.Messages[len(capsule.Messages)-1]
 
-		if _, err := r.pool.Exec(`
+		if _, err := r.sql.Exec(`
 			INSERT INTO messages (capsule_id, message, created_at)
 			VALUES (@capsule_id, @message, @created_at)
 		`,
-			sql.Named("capsule_id", capsule.GetId()),
+			sql.Named("capsule_id", capsule.Id),
 			sql.Named("message", message),
 			sql.Named("created_at", time.Now())); err != nil {
 			return err
@@ -55,7 +54,7 @@ func (r *SqlCapsuleRepository) Save(capsule *capsule.Capsule) error {
 	return nil
 }
 
-func (r *SqlCapsuleRepository) GetById(id string) (*capsule.Capsule, error) {
+func (r *repository) GetById(id string) (*Model, error) {
 	var name string
 	var description string
 	var dateToOpen time.Time
@@ -64,7 +63,7 @@ func (r *SqlCapsuleRepository) GetById(id string) (*capsule.Capsule, error) {
 	var updatedAt time.Time
 	var messages []string
 
-	if err := r.pool.QueryRow(`
+	if err := r.sql.QueryRow(`
 	SELECT name, description, date_to_open, is_open, created_at, updated_at
 	FROM capsules
 	WHERE id = @id
@@ -72,7 +71,7 @@ func (r *SqlCapsuleRepository) GetById(id string) (*capsule.Capsule, error) {
 		return nil, err
 	}
 
-	rows, err := r.pool.Query(`
+	rows, err := r.sql.Query(`
 		SELECT message
 		FROM messages
 		WHERE capsule_id = @capsule_id
@@ -94,16 +93,14 @@ func (r *SqlCapsuleRepository) GetById(id string) (*capsule.Capsule, error) {
 		return nil, err
 	}
 
-	capsule := capsule.Builder().
-		WithId(id).
-		WithName(name).
-		WithIsOpen(isOpen).
-		WithDescription(description).
-		WithDateToOpen(dateToOpen).
-		WithCreatedAt(createdAt).
-		WithUpdatedAt(updatedAt).
-		WithMessages(messages).
-		Build()
-
-	return capsule, nil
+	return &Model{
+		Id:          id,
+		Name:        name,
+		Description: description,
+		DateToOpen:  dateToOpen,
+		IsOpen:      isOpen,
+		CreatedAt:   createdAt,
+		UpdatedAt:   updatedAt,
+		Messages:    messages,
+	}, nil
 }
