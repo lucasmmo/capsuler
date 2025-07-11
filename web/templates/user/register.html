@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capsuler Register</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body>
+    {{ .message }}
+    <nav class="w-full h-20 fixed flex items-center ml-20 max-w-2xl">
+        <a href="/" class="flex gap-3">
+        <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+            height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M5 12h14M5 12l4-4m-4 4 4 4" />
+        </svg>
+        <span>Voltar</span>
+        </a>
+    </nav>
+    <main class="h-screen flex flex-col justify-center items-center">
+        <div class="flex space-x-3 items-center my-5">
+            <svg class="w-9 h-9 text-violet-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            <h1 class="text-3xl font-bold"> Capsuler </h1>
+        </div>
+        <div class="h-auto  px-5 flex flex-col justify-center items-center container mx-auto max-w-md shadow-md">
+            <div class="flex flex-col text-center my-4 w-full space-y-2">
+                <span class="text-2xl font-semibold">Registre sua conta</span>
+                <span class="text-gray-600 text-sm" >Comece a preservar seus momentos especiais</span>
+            </div>
+            <form action="/register" method="post" class="space-y-5 w-full">
+                <div class="flex flex-col gap-2">
+                    <span class="text-sm font-semibold text-gray-500">Usuário</span>
+                    <input class="border-solid border-gray-200 border-1 rounded-sm px-3 py-1" type="text" name="username" placeholder="johndoe0">
+                </div>
+                <div class="flex flex-col gap-2">
+                    <span class="text-sm font-semibold text-gray-500">Email</span>
+                    <input class="border-solid border-1 border-gray-200 rounded-sm px-3 py-1" type="email" name="email" placeholder="johndoe0@gmail.com">
+                </div>
+                <div class="flex flex-col gap-2">
+                    <span class="text-sm font-semibold text-gray-500">Senha</span>
+                    <input class="border-solid border-1 border-gray-200 rounded-sm px-3 py-1" type="password" name="password" placeholder="Sua senha">
+                </div>
+                <button type="submit" class="w-full text-white py-3 rounded-lg text-center bg-linear-to-r from-violet-500 to-blue-500 focus:from-violet-700 focus:to-blue-700">Criar conta</button>
+            </form>
+            <div class="my-5">
+                <span class="text-gray-600 text-sm">Já tem uma conta?</span>
+                <a href="/login"><button class="text-violet-600 text-sm">Faça o login</button></a>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capsuler Home</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body>
+    <nav>
+        <div class="container mx-auto px-4 my-5">
+            <ul class="flex justify-between items-center">
+                <li>
+                    <div class="flex space-x-3 items-center">
+                        <svg class="w-9 h-9 text-violet-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                        <h1 class="text-3xl font-bold"> Capsuler </h1>
+                    </div>
+                </li>
+                <li>
+                    <ul class="flex space-x-5">
+                            <li><a href="/login"
+                                    class="px-3 py-2 focus:bg-violet-600 font-bold bg-violet-500 hover:bg-violet-400 text-white rounded-sm">Entrar</a>
+                        </li>
+                        <li><a href="/register"
+                                class="px-3 py-2 focus:bg-violet-600 focus:text-white hover:bg-violet-500 hover:text-white rounded-sm">Cadastrar</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <main class="h-screen flex flex-col justify-center">
+        <section class="container mx-auto max-w-3xl space-y-5 flex flex-col items-center text-center">
+            <div class="text-5xl md:text-6xl font-bold text-gray-900 mt-15">
+                <span>Preserve seus</span>
+                <span class="text-transparent bg-clip-text bg-linear-to-r from-violet-800 to-cyan-400">momentos
+                    especiais</span>
+            </div>
+            <p class="text-slate-600 text-xl max-w-2xl">Crie cápsulas digitais com mensagens, fotos e vídeos para serem
+                descobertas no futuro ou compartilhadas com pessoas especiais através de um link único.</p>
+            <ul class="flex justify-center space-x-5 my-10">
+                <li class="flex flex-col items-center">
+                    <div class="h-12 w-12 bg-violet-100 flex items-center justify-center rounded-full">
+                        <svg class="text-violet-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="32"
+                            height="32" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
+                        </svg>
+                    </div>
+                    <span class="font-semibold">Momentos especiais</span>
+                </li>
+                <li class="flex flex-col items-center">
+                    <div class="h-12 w-12 bg-cyan-100 flex items-center justify-center rounded-full">
+                        <svg class="text-cyan-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="32"
+                            height="32" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                    </div>
+                    <span class="font-semibold">Viagem no tempo</span>
+                </li>
+                <li class="flex flex-col items-center">
+                    <div class="h-12 w-12 bg-gray-200 flex items-center justify-center rounded-full">
+                        <svg class="text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="32"
+                            height="32" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                        </svg>
+                    </div>
+                    <span class="font-semibold">Compartilhamento</span>
+                </li>
+            </ul>
+            <a href="/login"><button
+                    class="bg-linear-to-bl from-violet-500 to-fuchsia-500 hover:from-violet-700 hover:to-fuchsia-700 focus:from-violet-900 focus:to-fuchsia-900 text-white px-4 py-3 font-bold rounded-xl">Criar
+                    uma cápsula</button></a>
+            <div class="text-slate-600 text-md">Apenas R$ 5,00 por cápsula • Sem mensalidade • Acesso para sempre</div>
+        </section>
+    </main>
+    <footer class="bg-violet-100 text-gray-500 font-semibold w-full bottom-0 flex items-center justify-center">
+        <div class="flex items-center flex-col my-10">
+            <div class="flex space-x-3 items-center">
+                <svg class="w-9 h-9 text-violet-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                <h1 class="text-3xl font-bold"> Capsuler </h1>
+            </div>
+            Preserve momentos especiais para serem redescobertos no futuro.
+        </div>
+    </footer>
+</body>
+
+</html>

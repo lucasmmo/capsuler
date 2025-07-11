@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capsule Create</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+    {{ .message }}
+    <div class="mt-10 space-y-3 container mx-auto space-y-7 max-w-2xl">
+        <div class="flex flex-col border-1 border-gray-200 shadow-sm p-5 rounded-lg space-y-5">
+            <div class="flex flex-col">
+                <span class="text-3xl font-bold">Criar nova cápsula</span>
+                <span>Configure sua cápsula do tempo e defina quando ela será aberta.</span>
+            </div>
+            <form action="/capsules/create" method="post" class="space-y-5">
+                <div class="flex flex-col gap-2">
+                    <span class="text-sm font-semibold text-gray-500">Nome</span>
+                    <input class="border-solid border-gray-200 border-1 rounded-sm px-3 py-1" type="text" name="name" placeholder="Coloque aqui o nome da sua cápsula...">
+                </div>
+                <div class="flex flex-col gap-2">
+                    <span class="text-sm font-semibold text-gray-500">Descrição</span>
+                    <input class="border-solid border-1 border-gray-200 rounded-sm px-3 py-1" type="text" name="description" placeholder="Descrição da cápsula...">
+                </div>
+                <div class="flex flex-col gap-2">
+                    <span class="text-sm font-semibold text-gray-500">Data de abertura</span>
+                    <input class="border-solid border-1 border-gray-200 rounded-sm px-3 py-1" type="date" name="date_to_open">
+                </div>
+                <input type="hidden" name="checkout_session_id" value="{{ .checkout_session_id }}">
+                <button type="submit" class="w-full text-white py-3 rounded-lg text-center bg-linear-to-r from-violet-500 to-blue-500 focus:from-violet-700 focus:to-blue-700">Criar capsula</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
